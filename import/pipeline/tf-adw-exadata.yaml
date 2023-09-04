@@ -1,0 +1,30 @@
+version: 0.1
+component: build
+timeoutInSeconds: 1800
+shell: bash
+# env:
+#   variables:
+
+#   exportedVariables:
+#     - BUILDRUN_HASH
+
+#   vaultVariables:
+
+steps:
+  - type: Command
+    name: "install terraform"
+    timeoutInSeconds: 140
+    command: |
+      echo "install terraform"
+      yum install -y yum-utils
+      yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
+      yum -y install terraform
+      terraform version
+  - type: Command
+    name: "terraform init e plan"
+    timeoutInSeconds: 140
+    command: |
+      cd adw-exadata
+      ls ../../
+      terraform init
+      terraform apply -var-file="../../var/adw-exadata.tfvars.json" --auto-approve
